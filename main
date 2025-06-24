@@ -1,0 +1,59 @@
+import tkinter as tk
+from tkinter import filedialog, ttk
+
+def select_input_folder():
+    folder = filedialog.askdirectory()
+    if folder:
+        input_folder_var.set(folder)
+
+def select_output_folder():
+    folder = filedialog.askdirectory()
+    if folder:
+        output_folder_var.set(folder)
+
+root = tk.Tk()
+root.title("Batch Photo & Video Editor")
+
+# Biến lưu đường dẫn thư mục
+input_folder_var = tk.StringVar()
+output_folder_var = tk.StringVar()
+
+# --- Chọn thư mục đầu vào/ra ---
+tk.Label(root, text="Thư mục ảnh/video đầu vào:").grid(row=0, column=0, sticky='e')
+tk.Entry(root, textvariable=input_folder_var, width=40).grid(row=0, column=1)
+tk.Button(root, text="Chọn...", command=select_input_folder).grid(row=0, column=2)
+
+tk.Label(root, text="Thư mục lưu kết quả:").grid(row=1, column=0, sticky='e')
+tk.Entry(root, textvariable=output_folder_var, width=40).grid(row=1, column=1)
+tk.Button(root, text="Chọn...", command=select_output_folder).grid(row=1, column=2)
+
+# --- Chọn loại filter ---
+tk.Label(root, text="Filter:").grid(row=2, column=0, sticky='e')
+filter_var = tk.StringVar(value="none")
+filter_options = ['none', 'grayscale', 'blur', 'sepia', 'invert']
+ttk.Combobox(root, textvariable=filter_var, values=filter_options, width=15).grid(row=2, column=1, sticky='w')
+
+# --- Resize tuỳ chọn ---
+tk.Label(root, text="Kích thước (WxH, px):").grid(row=3, column=0, sticky='e')
+resize_w = tk.Entry(root, width=5)
+resize_h = tk.Entry(root, width=5)
+resize_w.grid(row=3, column=1, sticky='w')
+resize_h.grid(row=3, column=1, padx=(60,0), sticky='w')
+
+# --- Crop / cut video ---
+tk.Label(root, text="Cắt video (giây):").grid(row=4, column=0, sticky='e')
+tk.Label(root, text="Từ:").grid(row=4, column=1, sticky='w')
+cut_start = tk.Entry(root, width=5)
+cut_start.grid(row=4, column=1, padx=(30,0), sticky='w')
+tk.Label(root, text="Đến:").grid(row=4, column=1, padx=(90,0), sticky='w')
+cut_end = tk.Entry(root, width=5)
+cut_end.grid(row=4, column=1, padx=(120,0), sticky='w')
+
+# --- Subtitle ---
+subtitle_var = tk.BooleanVar()
+tk.Checkbutton(root, text="Tự động dịch & thêm phụ đề", variable=subtitle_var).grid(row=5, column=1, sticky='w')
+
+# --- Nút hành động ---
+tk.Button(root, text="Xử lý hàng loạt", bg='green', fg='white').grid(row=6, column=1, pady=10)
+
+root.mainloop()
